@@ -1,0 +1,17 @@
+%html  
+  %body
+    %div.ui-layout-center
+      %div  
+        %span{:align=>'center'}
+          %h1
+            Assign Project
+      %form
+        %label
+          %b
+            Project Name:
+        =select_tag 'project',options_for_select(@projects)
+        %label
+          %b
+            Employee Name:
+        =text_field_tag :employee_name
+        %input{:type=>'submit',:value=>'Assign',:id=>'project_assign'}

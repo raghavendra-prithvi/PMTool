@@ -1,0 +1,81 @@
+=javascript_include_tag 'jquery.ui.datepicker.js','jquery-ui.js', 'grid.locale-en.js','jquery.jqGrid.min.js','jquery.validate.js'
+=stylesheet_link_tag 'jquery-ui-1.8.9.custom.css', 'ui.jqgrid.css', 'jquery-ui.css'
+%html  
+  %body
+    %div.ui-layout-center
+      %div     
+        %span{:align=>'right'}
+          %h1
+            Employees details
+      %table#employee_details
+      %div
+        &nbsp
+      %br
+      %table#employee_timesheets      
+
+:javascript
+  $(document).ready(function($){
+    var lastsel;
+    jQuery("#employee_details").jqGrid({ 
+        url:"/status_reports/all_employees_details",        
+        caption: 'Daily Status Report',
+        datatype: "json", 
+        colNames: ['Associate Id',
+                   'Associate Name',
+                   'Associate Role'],
+        colModel: [ 
+            {name:'associate_id',index:'associate_id',width:50},
+            {name:'associate_name',  index:'associate_name',  width:100, sortable:false },
+            {name:'associate_role', index:'associate_role', width:50},
+            ],  
+        height: 250,
+        sortorder: "desc",
+        autowidth: true,
+        rowNum: -1,
+        shrinkToFit: true,
+        hidegrid: false,  
+        ondblClickRow: function(id){
+                        var row_data = $('#employee_details').getRowData(id);
+                        alert(row_data["associate_id"]);
+                        var user_id =  row_data["associate_id"];
+                        
+        },
+        addDialogOptions: {
+                        "recreateForm":true,errorTextFormat:function(data) { return 'Error: ' + 'field is required' }
+        }
+    });
+    
+    jQuery("#employee_timesheets").jqGrid({ 
+        url:"/status_reports/employee_timesheet&user_id"=user_id,        
+        caption: 'Employee Time sheet',
+        datatype: "json", 
+        colNames: ['Task',
+                   'Task Description',
+                   'Project',
+                   'Hours Worked',
+                   'Billable',
+                   'Start Date',
+                   'End Date'],
+        colModel: [ 
+            {name:'task',index:'task',width:50},
+            {name:'task_description',  index:'task_description',  width:100, sortable:false },
+            {name:'project', index:'project', width:50},
+            {name:'hours_worked', index:'hours_worked', width:30},
+            {name:'billable',     index:'billable',formatter:'checkbox', width:20},
+            {name:'start_date', index:'start_date', width:30},
+            {name:'end_date', index:'end_date', width:30}
+            ],  
+        height: 250,
+        sortorder: "desc",
+        autowidth: true,
+        rowNum: -1,
+        shrinkToFit: true,
+        hidegrid: false,  
+        onSelectRow: function(id){
+                        if(id){  jQuery('#employee_timesheets').jqGrid('editRow',id,true).navGrid; } 
+        },
+        addDialogOptions: {
+                        "recreateForm":true,errorTextFormat:function(data) { return 'Error: ' + 'field is required' }
+        }
+    });
+  });

@@ -1,0 +1,117 @@
+=javascript_include_tag 'grid.locale-en.js','jquery.jqGrid.min.js' 
+=stylesheet_link_tag 'jquery-ui-1.8.9.custom.css', 'ui.jqgrid.css'
+%html  
+  %body
+    %div.ui-layout-west     
+      %span{:align=>'right'}
+        %h1
+          Create Task
+    %div.ui-layout-center
+      %div
+        %h2
+          Please Enter the below details to create & assign the task      
+      %form{:action=>'/status_reports/create_task',:id=>'create_task_form'}
+        %div{:style=>'width:100%'}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Task:
+            =select_tag 'task',options_for_select(@tasks),{:style=>"width:100;margin:10px 15px 5px 35px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Task Description:
+            =text_field_tag 'task_description', nil , {:style=>"margin:10px 15px 5px 10px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Project:
+            =select_tag 'project',options_for_select(@projects),{:style=>"margin:5px 15px 5px 25px;"}
+        %div
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Estimated Hours:
+            =select_tag 'estimated_work_time',options_for_select(@hours),{:style=>"margin:10px 15px 5px 10px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Start Date:
+            %input{:name=>"start_date",:id=>'start_date',:style=>"margin:5px 15px 5px 55px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                End Date:
+            %input{:name=>"end_date",:id=>'end_date',:style=>"margin:5px 15px 5px 5px;"}
+        %div
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Billable:
+            %input{:type=>"checkbox",:name=>"billable",:id=>'billable',:style=>"margin:5px 45px 5px 85px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Assigned To:
+            %input{:name=>"assigned_to",:id=>'assigned_to',:style=>"margin:5px 15px 5px 44px;"}
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %input{:type=>'submit',:value=>'Create Task',:id=>'create_task',:style=>"margin:5px 15px 5px 80px;"}
+      %div
+        &nbsp
+        /
+        &nbsp
+        /
+      %table{:id=>'created_tasks_table'}
+      
+
+:javascript
+  $(document).ready(function($){
+    var lastsel;
+    jQuery("#created_tasks_table").jqGrid({ 
+        url:"/status_reports/tasks_assigned_by_me",        
+        caption: 'Assigned Tasks details',
+        datatype: "json", 
+        colNames: ['Task',
+                   'Task Description',
+                   'Project',
+                   'Estimated Hours',
+                   'Billable',
+                   'Start Date',
+                   'Assigned To',
+                   'Action'],
+        colModel: [ 
+            {name:'task',index:'task',width:50},
+            {name:'task_description',  index:'task_description',  width:100, sortable:false },
+            {name:'project', index:'project', width:50},
+            {name:'estimated_hours', index:'estimated_hours', width:30},
+            {name:'billable',     index:'billable',formatter:'checkbox', width:20},
+            {name:'start_date', index:'start_date', width:30},
+            {name:'assigned_to', index:'assigned_to', width:30},
+            {name:'action', index:'Action', width:30}
+            ],  
+        sortname: 'invoice_date', 
+        rowNum:10,
+        height: 250,
+        sortorder: "desc",
+        multiselect :true, 
+        rowList:[10,20,30],
+        autowidth: true,
+        shrinkToFit: true,
+        hidegrid: false,  
+    });
+    
+    $('#create_task').click(function(){
+      var cl = jQuery("#created_tasks_table").getGridParam("records");
+      cl = cl+1;
+      var task = $('#task').val();
+      var task_desc = $('#task_description').val();
+      var project = $('#project').val();
+      var working_time = $('#estimated_work_time').val();
+      var bill = $('#billable').val();
+      var sdate = $('#start_date').val();
+      var assigned_to = $('#assigned_to').val();
+      de = "<input id ='X_" +cl  + "' style='height:25px;width:25px;' type='button' value='X'  onclick= ' $(this).parent().parent().remove();' />"
+      var data = {task:task,task_description:task_desc,project:project,estimated_hours:working_time,billable:bill,start_date:sdate,assigned_to:assigned_to,action:de};
+      $("#created_tasks_table").addRowData(cl,data); 
+    });
+  });

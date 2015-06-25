@@ -1,0 +1,208 @@
+/*reset*/
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, pre {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+body {line-height:1.1;}
+table {border-collapse:separate;border-spacing:0;}
+/* Had to comment this out because it was effected aligning toolbars in
+ extjs. I tried to override it in screen.css but it was not working
+ See the aggregator_leads index page for an example of the toolbar being
+ right justified
+ */
+/*caption, th, td {text-align:left;font-weight:normal;} */
+table, td, th {vertical-align:middle;}
+blockquote:before, blockquote:after, q:before, q:after {content:"";}
+blockquote, q {quotes:"" "";}
+a img {border:none;}
+
+/*typography basics*/
+
+p {margin:0 0 1.5em;}
+p img.left {float:left;margin:1.5em 1.5em 1.5em 0;padding:0;}
+p img.right {float:right;margin:1.5em 0 1.5em 1.5em;padding:0;}
+a:focus, a:hover {color:#000;}
+a {color:#009;text-decoration:underline;}
+blockquote {margin:1.5em;color:#666;font-style:italic;}
+strong {font-weight:bold;}
+em, dfn {font-style:italic;}
+pre, code {margin:1.5em 0;white-space:pre;}
+pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+li ul, li ol {margin:0 1.5em;}
+ul, ol {margin:0 1.5em 1.5em 1.5em;}
+ul {list-style-type:disc;}
+ol {list-style-type:decimal;}
+fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
+legend {font-weight:bold;font-size:1.1em;}
+.small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
+.large {font-size:1.2em;line-height:2.5em;margin-bottom:1.25em;}
+.highlight {background:#ff0;}
+.added {background:#060;color:#fff;}
+
+table th {
+  color: #000;
+  font-weight:bold;
+}
+
+.col table.wide {margin-bottom:1.4em;width:100%;}
+
+.col table.wide th {
+  background: #E9E9E9 none repeat scroll 0 0;
+  border-bottom: 2px solid #FFFFFF;
+}
+.col table.wide td {border-bottom: 1px solid #EFEFEF;}
+.col table.wide th, .col table.wide td {padding:4px 10px 4px 5px;}
+
+img.ui-datepicker-trigger {
+  margin:2px;
+  vertical-align:middle;
+}
+table.ui-datepicker a {
+  text-decoration: none;
+}
+table.ui-datepicker td, table.ui-datepicker th {
+  text-align: right;
+}
+
+/* forms */
+form div.field {
+  margin: 0 0 2px;
+  clear: both;
+}
+form div.field label {
+  font-weight: bold;
+  display: block;
+  float: left;
+  width: 80px;
+  margin: 3px 10px 3px 0;
+}
+form div.field span.formtext {
+  font-weight: bold;
+  display: block;
+  margin: 5px 10px 0 0;
+  float: left;
+  height: 15px;
+}
+form input.input_text {
+  border:1px solid #D9E0E7;
+  color:#666666;
+  font-size:10px;
+  padding:3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+form div.field input.hasDatepicker {
+  width: 150px;
+}
+form div.field label.error {
+  display: inline;
+  float: none;
+  padding: 5px;
+  font-size: 12px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 10px;
+  background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;
+}
+form div.field select {
+  margin-top: 5px;
+}
+
+form span.field-with-errors input.input_text { border-color: #f00;}
+
+.lineform_item {
+  float: left;
+}
+.lineform_item label {
+  display: block;
+  font-size:0.9em;
+  font-weight:bold;
+}
+.lineform_item input, .lineform_item select {
+  margin-right: 5px;
+}
+
+.clear_left {
+  clear:both;
+}
+
+/*flash messages*/
+#flash .error, #flash .notice, #flash .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;text-align:center;}
+#flash .error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+#flash .notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+#flash .success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+#flash .error a {color:#8a1f11;}
+#flash .notice a {color:#514721;}
+#flash .success a {color:#264409;}
+
+#agg-box-message { margin: 22px 22px 0 22px; font-size: 12px; }
+#agg-box-message div {padding: 5px;}
+#agg-box-message .red { border: 2px solid red; background:#FBE3E4}
+#agg-box-message .yellow { border: 2px solid #F0E68C;  }
+#agg-box-message .green { border: 2px solid green;  }
+#agg-box-message ul {
+  list-style-type: circle;
+  margin-left: 22px;
+}
+
+h3 { font-size: 14px; font-weight: bold;}
+img.left {
+  float: left;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+img.right {
+  float: right;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+body {
+	font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
+}
+#user_info {margin: 10px;}
+#user_info label { width: 50px; font-weight: bold; float: left; clear: left; }
+
+
+/* Start jquery.loadmask*/
+.ui-overlay-loading {
+  background:  url('images/loading.gif') no-repeat 5px 5px;
+  padding:5px 10px 5px 25px;
+  line-height: 16px;
+  /*color:#222;*/
+  /*font:normal 11px tahoma, arial, helvetica, sans-serif;*/
+  cursor:wait;
+}
+
+.loadmask {
+    z-index: 100;
+    position: absolute;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    background-color: #CCC;
+    width: 100%;
+    height: 100%;
+    zoom: 1;
+}
+.loadmask-msg {
+    z-index: 20001;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border:1px solid #6593cf;
+    background: #c3daf9;
+    padding:2px;
+}
+
+.masked {
+    overflow: hidden !important;
+}
+.masked-relative {
+    position: relative !important;
+}
+.masked-hidden {
+    visibility: hidden !important;
+}
+
+/* End jquery.loadmask*/

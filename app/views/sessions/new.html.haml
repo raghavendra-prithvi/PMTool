@@ -1,0 +1,53 @@
+=javascript_include_tag 'jquery.jqGrid.min.js','jquery.validate.min.js'
+:javascript
+  $(document).ready(function () {
+        $('body').layout({ applyDefaultStyles: true });
+        $("#password").val('');
+        $("#user_id").val('');
+        $('#submit').click(function(){
+            $('#login_form').valid();
+            if($("#user_id").val()=='' || $("#password").val()=='')
+            {
+             alert("Please enter UserId/Password");
+             return false;
+             }
+        });
+  });
+  
+%style{:type => "text/css", :media => "screen"}
+  :plain
+    .layout-center{background:url(/images/background_blue.gif) repeat-x scroll 10% 10% #7BA0D3;width:100%}
+    .layout-header{background:url(/images/prithvilogo.jpg);width:100%}
+    .layout-center input{ margin:10px 25px 25px 10px}
+    .body-background{background-color:#141414
+    .ui-layout-pane-west { overflow: auto; }
+  
+%html  
+  %body
+    %div.ui-layout-center
+      %div{:align=>'center'}
+        -flash[:message]
+        %span
+          %h1
+            Login 
+      %form{:id=>'login_form',:action=>'/sessions/create', :method=>'post'}
+        %div{:align=>'center'}
+          %span{:style=>'width:150px;margin:10px 10px 0px 10px;'}
+            %label
+              %b
+                Login Id
+          %span
+            =text_field_tag 'user_id',nil
+        %br
+        %div{:align=>'center'}
+          %span{:style=>'width:150px;margin:10px 8px 0px 10px;'}
+            %label
+              %b
+                Password
+          %span
+            =text_field_tag 'password',nil,{:type=>'password'}
+        %div{:style=>'margin:10px 0px 0px 10px',:align=>'center'}
+          %input{ :type => "submit", :id => "submit", :value => "Submit" }
+        %div{:style=>'margin:10px 0px 0px 10px',:align=>'center'}
+          =@error_msg
+  

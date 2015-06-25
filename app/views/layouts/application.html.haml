@@ -1,0 +1,48 @@
+!!!
+=javascript_include_tag 'jquery-1.5.1.min.js','jquery.layout.js'
+:javascript
+  $(document).ready(function () {
+        $('body').layout({ applyDefaultStyles: true });
+  });
+%style{:type => "text/css", :media => "screen"}
+  :plain
+    .layout-head{background:#7BA0D3;width:100%}
+    .ui-layout-resizer{:style=>'display:none'}
+%html
+  %head
+    %meta{:charset => "UTF-8", :content => "text/html", 'http-equiv'=>"Content-Type" }
+    %meta{'name' => "description", :content => "Time Tracker"}
+    %title= "PM Tool"
+  %body
+    %div.ui-layout-north{:style=>'width:100%'}
+      %div.layout-head{:style=>'height:45%'}
+        %span{:style=>'float:left'}
+          #banner= image_tag('/images/prithvilogo.jpg', :size => '376x60')
+        %span.layout-head{:align=>'center'}
+          %h1
+            PMTool Application
+    %div.ui-layout-west
+      %div
+        -if (@role = 'Admin')
+          %a(href="/status_reports/employees")
+            %h3 
+              Get Employee Timesheets
+      %div{:style=>'width:150'}
+        %a(href="/status_reports/daily")
+          %h3 
+            Daily Status
+      %div{:style=>'width:150'}
+        %a(href="/status_reports/add_task")
+          %h3 Create Task
+      %div{:style=>'width:150'}
+        %a(href="/status_reports/add_project")
+          %h3 Create Project
+      %div{:style=>'width:150'}
+        %a(href="/status_reports/assign_project")
+          %h3 Assign Project
+      %div{:style=>'width:150'}
+        %a(href="/logout/")
+          %h3 Log Out
+    = yield
+    
+	  

@@ -1,0 +1,17 @@
+%html  
+  %body
+    %div.ui-layout-center
+      %div   
+        %span{:align=>'center'}
+          %h3
+            Add New Project
+      %form{:controller=>'status_reports',:action=>'create_project',:method=>'post'}
+        %label
+          %b
+            Project Name:
+        =text_field_tag :project_name
+        %label
+          %b
+            Customer Id:
+        =text_field_tag :customer_id
+        %input{:type=>'submit',:value=>'Create',:id=>'project_submit'}

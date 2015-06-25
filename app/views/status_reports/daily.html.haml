@@ -1,0 +1,255 @@
+=javascript_include_tag 'jquery.ui.datepicker.js','jquery-ui.js', 'grid.locale-en.js','jquery.jqGrid.min.js','jquery.validate.js'
+=stylesheet_link_tag 'jquery-ui-1.8.9.custom.css', 'ui.jqgrid.css', 'jquery-ui.css'
+%html  
+  %body
+    %div.ui-layout-west     
+      %span{:align=>'right'}
+        %h1
+          Daily Status Tracking
+    %div.ui-layout-center
+      %div.ui-layout-west     
+        %span{:align=>'right'}
+          %h1
+            Daily Status Tracking
+      %form{:id=> 'daily_status_form',:method=>'post'}
+        %div
+          %span{:style=>'width:100;margin:10px 15px 5px 0px;'}
+            %label
+              %b
+                Task
+            =select_tag 'task',options_for_select(@tasks),{:style=>'width:100;margin:10px 0px 5px 25px;'}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %label
+              %b
+                Task Description
+            =text_field_tag 'task_description',nil,{:style=>'margin:10px 10px 5px 10px;'}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %label
+              %b
+                Project
+            =select_tag 'project',options_for_select(@projects), {:style=>"margin:10px 10px 15px 25px;"}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %label
+              %b
+                Hours Worked
+            =select_tag 'working_time',options_for_select(@hours),{:style=>'margin:10px 10px 15px 10px;'}
+        %div
+          %span{:style=>'width:100;margin:10px 88px 5px 0px;'}
+            %label
+              %b
+                Billable
+            %input{:type=>"checkbox",:name=>"billable",:id=>'billable', :style=>'margin:10px 0px 15px 35px;'}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %label
+              %b
+                Start Date
+            %input{:name=>"start_date",:id=>'start_date',:style=>"margin:10px 10px 15px 51px;"}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %label
+              %b
+                End Date
+            %input{:name=>"end_date",:id=>'end_date', :style=>"margin:10px 10px 15px 0px;"}
+          %span{:style=>'width:100;margin:10px 10px 5px 0px;'}
+            %input{:type=>'button',:value=>'Submit',:id=>'ds_submit'}
+      %table#daily_status_table
+      %div#daily_status_pager
+      %div
+        &nbsp
+        /
+        &nbsp
+        /
+      %table#assigned_tasks 
+
+:javascript
+  $(document).ready(function($){
+    var projects =new Array('#{@projects}');
+    var tasks = new Array('#{@tasks}');
+    var billing_tasks = '#{@billing_task}'
+    $('#task').change(function(){
+        var task_val = $('#task').val();
+        alert(tasks.length);
+        for(i=0;i<tasks;i++){
+            if(tasks[i] == task_val)
+              {
+               var task_id = i
+              }
+            //alert(i);
+            //alert(task_id);
+        }
+        
+        
+    });
+    //alert(tasks);
+    //alert(billing_tasks);
+    //$('#start_date').datepicker();
+    $('#ds_submit').click(function(){
+    $('#daily_status_form').valid();
+    })
+    //$('#daily_status_form').validate(function(){
+      //      rules:{
+        //        'task_description':{
+  		    //          required: true
+            //    		},
+  	          //    "start_date":{
+  		          //    required: true
+                	//	}
+              //}              
+    //});
+    var lastsel;
+    jQuery("#daily_status_table").jqGrid({ 
+        url:"/status_reports/tasks_today",        
+        caption: 'Daily Status Report',
+        datatype: "json", 
+        colNames: ['Task',
+                   'Task Description',
+                   'Project',
+                   'Hours Worked',
+                   'Billable',
+                   'Start Date',
+                   'End Date'],
+        colModel: [ 
+            {name:'task',index:'task',width:50},
+            {name:'task_description',  index:'task_description',  width:100, sortable:false },
+            {name:'project', index:'project', width:50},
+            {name:'hours_worked', index:'hours_worked', width:30},
+            {name:'billable',     index:'billable',formatter:'checkbox', width:20},
+            {name:'start_date', index:'start_date', width:30},
+            {name:'end_date', index:'end_date', width:30}
+            ],  
+        height: 250,
+        sortorder: "desc",
+        autowidth: true,
+        rowNum: -1,
+        pager: '#daily_status_pager',
+        shrinkToFit: true,
+        hidegrid: false,  
+        onSelectRow: function(id){
+                        if(id){  jQuery('#daily_status_table').jqGrid('editRow',id,true).navGrid; } 
+        },
+        addDialogOptions: {
+                        "recreateForm":true,errorTextFormat:function(data) { return 'Error: ' + 'field is required' }
+        }
+    });
+    jQuery("#daily_status_table")
+          .jqGrid('navGrid', '#daily_status_pager', {edit:false,add:false,del:false,search:false,refresh:false,hide:false})
+          
+    jQuery("#assigned_tasks").jqGrid({ 
+        url:"/status_reports/assigned_tasks?user_id=",        
+        caption: 'Assinged Tasks',
+        datatype: "json", 
+        colNames: ['Task',
+                   'Task Description',
+                   'Project',
+                   'Time Allocated',
+                   'Billable',
+                   'Created Date',
+                   'Start Date',
+                   'End Date',
+                   'Assigned By',
+                   'Action'],
+        colModel: [ 
+            {name:'task',index:'task',width:50,editable: true},
+            {name:'task_description',  index:'task_description',  width:100, sortable:false,editable: true },
+            {name:'project', index:'project', width:50},
+            {name:'time_allocated', index:'hours_worked', width:30},
+            {name:'billable',     index:'billable',formatter:'checkbox', width:20},
+            {name:'created_date',     index:'created_date', width:30},
+            {name:'start_date', index:'start_date', width:30},
+            {name:'end_date', index:'end_date', width:30},
+            {name:'assigned_by', index:'assigned_by', width:30},
+            {name:'action', index:'action', width:30}
+            ],  
+        sortname: 'invoice_date', 
+        emptyrecords: "No Tasks found",  
+        autoheight:true ,
+        sortorder: "desc",
+        rowNum: -1,        
+        autowidth: true,
+        shrinkToFit: true,
+        hidegrid: false,  
+        gridComplete: function() {
+                     var ids = jQuery("#assigned_tasks").jqGrid('getDataIDs');
+                     for(var i=0;i < ids.length;i++){
+                     var cl = ids[i];
+                     action = "<input type='button' value='Start' class='action' id='action_"+cl+"'/>";                      
+                     jQuery("#assigned_tasks").jqGrid('setRowData',ids[i],{action:action}); }
+                  },
+        onSelectRow: function(id){
+                        //if(id){  jQuery('#assigned_tasks').jqGrid('editRow',id,true).navGrid; } 
+        },
+        addDialogOptions: {
+                        "recreateForm":true,errorTextFormat:function(data) { return 'Error: ' + 'field is required' }
+        }        
+    });
+    function status_change(id){
+      alert("inside status change function");
+    }
+    
+    $('#assigned_tasks .action').live('click',function(){
+        var id = $(this).attr('id');
+        var x = "#"+id
+        var value = $(this).attr('value');
+        var row_id = $(this).parent().parent().attr('id');
+        if (value == 'Start'){
+              $.ajax({  
+                    type: "post",  
+                    url: "/status_reports/update_task_status",
+                    data: "&associate_task_id=" + row_id+"&status=1",     
+                    success: function(data) {            
+                              $(x).val('Done');  
+                              if (data == "1" )
+                                     alert("Successfully changed the status");   
+              }    
+            });
+        }
+        else if (value = 'Done'){
+               $.ajax({  
+                    type: "post",  
+                    url: "/status_reports/update_task_status",
+                    data: "&associate_task_id=" + row_id+"&status=2",     
+                    success: function(data) {            
+                              if (data == "1" ) {
+                                     alert("Successfully changed the status");
+                                     $('#daily_status_table').trigger('reloadGrid');
+                                     $('#assigned_tasks').trigger('reloadGrid');
+                              }   
+              }
+            });
+              
+              //var details = $("#assigned_tasks").getRowData(row_id);
+              
+        }
+        
+    });
+    
+    
+    $('#ds_submit').click(function(){
+        var task = $('#task').val();
+        var task_des = $('#task_description').val();
+        var project = $('#project').val();
+        var time = $('#working_time').val();
+        var sdate = $('#start_date').val();
+        var edate = $('#end_date').val();
+        $('#task').val('select');
+        $('#task_description').val('');
+        $('#project').val('select');
+        $('#working_time').val('');
+        $('#start_date').val('');
+        $('#end_date').val('');
+        $.ajax({  
+            type: "post",  
+            url: "/status_reports/add_time_sheet",
+            data: "&task=" + task+"&task_description="+ task_des+"&project="+project+"&worked_time="+time+"&start_date="+sdate+"&end_date="+edate,     
+            success: function(data) {            
+                           alert("Success fully Added Time sheet");   
+            }
+         });
+        
+        $("#daily_status_table").trigger("reloadGrid");
+      });
+      
+      
+    
+  });
+      
+          
